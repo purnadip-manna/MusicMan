@@ -1,8 +1,8 @@
 import discord
-#import os
+import os
 import keep_alive
 
-#keep_alive.keep_alive()
+keep_alive.keep_alive()
 
 client = discord.Client()
 
@@ -65,5 +65,4 @@ async def on_message(message):
             await message.channel.send("Timer")
         
 
-#client.run(os.getenv('TOKEN'))
-client.run('Nzk5MzA1ODc0NDE2ODYxMjE0.YABpmg.-qwPJnc875niuDxvF9xuogdr5_g')
+client.run(os.getenv('TOKEN'))
