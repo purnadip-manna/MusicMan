@@ -32,14 +32,22 @@ MusicMan is basically a Discord Bot which can play musics in Discord voice chann
 
 9. Set a timer:
 `.timer <time_in_min>`
+
 *e.g- .timer 2* 
 (timer is set for 2min)
 
-10. Add song (youtube link) to MyPlaylist:
+
+**There is a pre-stored playlist system where youtube link can be stored.**
+
+10. Add song (youtube link) to Playlist:
 `.add https://www.youtube.com/url_sample_id`
 
 11. Show Playlist:
 `.show`
 
-12. Remove song from MyPlaylist:
+12. Remove song from Playlist:
 `.rm <song_no.>`
+
+
+### MusicMan is hosted on Replit
+[MusicMan - Replit](https://replit.com/@purnadip2702/MusicMan)
