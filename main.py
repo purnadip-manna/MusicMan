@@ -312,7 +312,6 @@ async def on_message(message):
             else:
                 await message.channel.send("I am not connected to a Voice channel.")
 
-
         # Timer ------------------
         elif msg.startswith(".timer"):
             ctx, t = map(str, msg.split(".timer"))
@@ -320,6 +319,5 @@ async def on_message(message):
             timerObj = Timer(timer_time, timesUp)
             timerObj.start()
             await message.channel.send("Alright, :timer: " + t + "mins.. Starting... now.")
-            
-
+ 
 client.run(os.environ['TOKEN'])
