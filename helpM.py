@@ -1,7 +1,5 @@
-# MusicMan
-MusicMan is basically a Discord Bot which can play musics in Discord voice channel.
-
-## Help:
+help_msg = """
+Help:
 *Every Command should start with . (full stop)*
 1. Join a Voice Channel:
 `.join <voice_channel_name>` or `.j <voice_channel_name>`
@@ -30,3 +28,4 @@ MusicMan is basically a Discord Bot which can play musics in Discord voice chann
 `.show`
 12. Remove song from MyPlaylist:
 `.rm <song_no.>`
+"""
