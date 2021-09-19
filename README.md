@@ -6,6 +6,7 @@ MusicMan is basically a Discord Bot which can play musics in Discord voice chann
 
 1. Join a Voice Channel:
 `.join <voice_channel_name>` or `.j <voice_channel_name>`
+
 *If the <voice_channel_name> is blank, it will join the first voice channel if exist*
 
 2. Leave a Voice Channel:
