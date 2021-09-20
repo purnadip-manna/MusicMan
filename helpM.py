@@ -8,24 +8,26 @@ Help:
 `.leave` or `.l`
 3. Play a song from youtube:
 `.play https://www.youtube.com/url_sample_id` or `.p https://www.youtube.com/url_sample_id`
-4. Pause the song:
+4. Show all song (in Queue):
+`.show`
+5. Pause the song:
 `.pause` or `.pp`
-5. Next song:
+6. Next song:
 `.next` or `.n`
-6. Previous song:
+7. Previous song:
 `.prev` or `.pr`
-7. Resume the song:
+8. Resume the song:
 `.resume` or `.r`
-8. Stop the song:
+9. Stop the song:
 `.stop` or `.s`
-9. Set a timer:
+10. Set a timer:
 `.timer <time_in_min>`
 *e.g- .timer 2* 
 (timer is set for 2min)
-10. Add song (youtube link) to MyPlaylist:
+11. Add song (youtube link) to Playlist:
 `.add https://www.youtube.com/url_sample_id`
-11. Show Playlist:
-`.show`
-12. Remove song from MyPlaylist:
+12. Show Playlist:
+`.list`
+13. Remove song from MyPlaylist:
 `.rm <song_no.>`
 """
