@@ -15,22 +15,25 @@ MusicMan is basically a Discord Bot which can play musics in Discord voice chann
 3. Play a song from youtube:
 `.play https://www.youtube.com/url_sample_id` or `.p https://www.youtube.com/url_sample_id`
 
-4. Pause the song:
+4. Show all song (in Queue):
+`.show`
+
+5. Pause the song:
 `.pause` or `.pp`
 
-5. Next song:
+6. Next song:
 `.next` or `.n`
 
-6. Previous song:
+7. Previous song:
 `.prev` or `.pr`
 
-7. Resume the song:
+8. Resume the song:
 `.resume` or `.r`
 
-8. Stop the song:
+9. Stop the song:
 `.stop` or `.s`
 
-9. Set a timer:
+10. Set a timer:
 `.timer <time_in_min>`
 
 *e.g- .timer 2* 
@@ -39,13 +42,13 @@ MusicMan is basically a Discord Bot which can play musics in Discord voice chann
 
 **There is a pre-stored playlist system where youtube link can be stored.**
 
-10. Add song (youtube link) to Playlist:
+11. Add song (youtube link) to Playlist:
 `.add https://www.youtube.com/url_sample_id`
 
-11. Show Playlist:
-`.show`
+12. Show Playlist songs:
+`.list`
 
-12. Remove song from Playlist:
+13. Remove song from Playlist:
 `.rm <song_no.>`
 
 

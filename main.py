@@ -12,8 +12,15 @@ client = discord.Client()
 
 stopFlag = 0
 playlist = ""
+nowPlaying = ""
 msg_channel = ""
 ytPlaying = False
+
+def get_name(linkOfVideo):
+    with youtube_dl.YoutubeDL({}) as ydl:
+        title = ydl.extract_info(linkOfVideo, download=False)['title']
+    return title
+
 class Queue:
     def __init__(self, arr):
         self.playlist = arr
@@ -38,6 +45,13 @@ class Queue:
             else: return 'end'
 
         else: return 'end'
+    
+    def display(self):
+        disp = ""
+        for x in self.playlist:
+            disp += get_name(x)+"\n"
+            
+        return disp
 
 
 YTDL_OPTIONS_AUDIO = {
@@ -109,6 +123,7 @@ async def on_message(message):
     global stopFlag
     global playlist
     global ytPlaying
+    global nowPlaying
 
     # storing the Channel Id:
     storeChannel(message.channel)
@@ -130,9 +145,11 @@ async def on_message(message):
             if ytPlaying:
                 if name != 'end':
                     download_audio(name)
+                    nowPlaying = name
                     song_ls = os.listdir("./ytmusic/")
                     name = song_ls[0]
                     voice_client.play(discord.FFmpegPCMAudio('./ytmusic/' + name, executable='ffmpeg'),after=lambda e: msg_sender(".next"))
+                    await message.channel.send("Playing: **"+get_name(nowPlaying)+"**")
 
                 else:
                     ytPlaying = False
@@ -143,9 +160,11 @@ async def on_message(message):
                 if name != 'end':
                     print("Downloading...", name)
                     download_audio(name)
+                    nowPlaying = name
                     song_ls = os.listdir("./ytmusic/")
                     name = song_ls[0]
                     voice_client.play(discord.FFmpegPCMAudio('./ytmusic/' + name, executable='ffmpeg'), after=lambda e: msg_sender(".next"))
+                    await message.channel.send("Playing: **"+get_name(nowPlaying)+"**")
 
                 else:
                     del playlist
@@ -214,14 +233,17 @@ async def on_message(message):
                 if name == "end":
                     name = playlist.dequeue()
                     download_audio(name)
+                    nowPlaying = name
                     song_ls = os.listdir("./ytmusic/")
                     name = song_ls[0]
                 else:
                     download_audio(name)
+                    nowPlaying = name
                     song_ls = os.listdir("./ytmusic/")
                     name = song_ls[0]
 
                 voice_client.play(discord.FFmpegPCMAudio("./ytmusic/" + name, executable='ffmpeg'), after=lambda e: msg_sender(".next"))
+                await message.channel.send("Playing: **"+get_name(nowPlaying)+"**")
 
             return
 
@@ -230,23 +252,24 @@ async def on_message(message):
         elif msg.startswith(".play") or msg.startswith(".p"):
             stopFlag = 0
             voice_client: discord.VoiceClient = discord.utils.get(client.voice_clients, guild=message.guild)
-            if voice_client.is_playing():
-                await voice_client.pause()
-
             ins_list = list(map(str, message.content.split(" ")))
             if(len(ins_list) > 1):
                 if checkSource(ins_list[1]) == 'youtube':
                     linkOfVideo = ins_list[1].strip()
                     if ytPlaying == False:
+                        if voice_client.is_playing():
+                            await voice_client.pause()
                         setPlaylist('youtube')
                         clearYTfolder()
                         try:
                             download_audio(linkOfVideo)
+                            nowPlaying = linkOfVideo
                             song_ls = os.listdir("./ytmusic/")
                             name = song_ls[0]
                             voice_client.play(discord.FFmpegPCMAudio('./ytmusic/' + name, executable='ffmpeg'),after=lambda e: msg_sender(".next"))
                             ytPlaying = True
                             await message.channel.purge(limit=1)
+                            await message.channel.send("Playing: **"+get_name(nowPlaying)+"**")
                             
                         except:
                             await message.channel.send("Error with the link")
@@ -257,6 +280,8 @@ async def on_message(message):
                         await message.channel.send("Added to queue")
 
                 else:
+                    if voice_client.is_playing():
+                        await voice_client.pause()
                     # code for my playlist
                     setPlaylist('myplaylist')
                     clearYTfolder()
@@ -264,10 +289,12 @@ async def on_message(message):
                     if name != "end":
                         try:
                             download_audio(name)
+                            nowPlaying = name
                             song_ls = os.listdir("./ytmusic/")
                             name = song_ls[0]
                             voice_client.play(discord.FFmpegPCMAudio('./ytmusic/' + name, executable='ffmpeg'),after=lambda e: msg_sender(".next"))
                             await message.channel.purge(limit=1)
+                            await message.channel.send("Playing: **"+get_name(nowPlaying)+"**")
                             
                         except:
                             await message.channel.send("Error with the link")
@@ -319,5 +346,41 @@ async def on_message(message):
             timerObj = Timer(timer_time, timesUp)
             timerObj.start()
             await message.channel.send("Alright, :timer: " + t + "mins.. Starting... now.")
+            
+        # Show the Queue list ---------------
+        elif msg == ".show":
+            try:
+                re = ":musical_note: **"+get_name(nowPlaying)+"**\n"
+                await message.channel.send(re+playlist.display())
+            except:
+                await message.channel.send("Error!")
+
+        # Show playlist songs ---------------  
+        elif msg == ".list":
+            my_list = db["my_playlist"]
+            disp = ""
+            i = 1
+            for x in my_list:
+                disp += str(i)+") "+get_name(x)+"\n"
+                i+=1
+                
+            await message.channel.send(disp)
+
+        # Add song to the playlist -----------
+        elif msg.startswith(".add"):
+            ctx, link = map(str, message.content.split(".add"))
+            link = link.strip()
+            db["my_playlist"].append(link)
+            await message.channel.send(get_name(link)+": **Added to playlist**")
+            
+        # Remove song from the playlist ------
+        elif msg.startswith(".rm"):
+            ctx, no = map(str, msg.split(".rm"))
+            try:
+                link = db["my_playlist"].pop(int(no)-1)
+                await message.channel.send(get_name(link)+": **Removed from playlist**")
+                
+            except:
+                await message.channel.send("Error!")
  
 client.run(os.environ['TOKEN'])
